@@ -1,4 +1,4 @@
-package com.ewake.myfinance.ui
+package com.ewake.myfinance.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

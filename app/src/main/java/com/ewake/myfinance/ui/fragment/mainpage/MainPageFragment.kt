@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import com.ewake.myfinance.R
 import com.ewake.myfinance.databinding.FragmentMainPageBinding
 import com.ewake.myfinance.ui.base.BaseFragment
 import com.ewake.myfinance.ui.model.UserModel
@@ -38,6 +39,15 @@ class MainPageFragment : BaseFragment() {
     ): View {
         _binding = FragmentMainPageBinding.inflate(inflater, container, false)
 
+        binding.apply {
+            add.setOnClickListener {
+                viewModel.onAddButtonClicked()
+            }
+            minus.setOnClickListener {
+                viewModel.onMinusButtonClicked()
+            }
+        }
+
         viewModel.apply {
             userLiveData.observe({ viewLifecycleOwner.lifecycle }, ::setUserData)
         }
@@ -51,6 +61,12 @@ class MainPageFragment : BaseFragment() {
     }
 
     private fun setUserData(userModel: UserModel) {
-
+        binding.apply {
+            income.text = getString(R.string.fragment_main_page_income, userModel.income.toString())
+            outcome.text =
+                getString(R.string.fragment_main_page_outcome, userModel.outcome.toString())
+            balance.text =
+                getString(R.string.fragment_main_page_balance, userModel.balance.toString())
+        }
     }
 }

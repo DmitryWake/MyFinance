@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">My Finance</string>
+    <string name="fragment_main_page_title">Текущее положение дел</string>
+    <string name="fragment_main_page_income">Поступления <font fgcolor="#008000">%s</font>Р</string>
+    <string name="fragment_main_page_outcome">Расходы <font fgcolor="#ff0000">%s</font>Р</string>
+    <string name="fragment_main_page_balance">Текущий баланс \n %s Р</string>
 </resources>

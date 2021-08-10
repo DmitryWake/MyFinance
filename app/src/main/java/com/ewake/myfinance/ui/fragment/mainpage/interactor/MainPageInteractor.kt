@@ -14,4 +14,8 @@ class MainPageInteractor @Inject constructor(private val userRepository: UserRep
     fun getCurrentUser(): Maybe<UserModel> {
         return userRepository.loadUser()
     }
+
+    fun updateCurrentUser(model: UserModel) {
+        userRepository.updateUser(model)
+    }
 }

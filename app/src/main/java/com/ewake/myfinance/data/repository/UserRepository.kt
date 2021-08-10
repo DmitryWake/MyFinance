@@ -24,4 +24,8 @@ class UserRepository @Inject constructor(appDatabase: AppDatabase) {
         dao.deleteAll()
         dao.insert(mapper.modelToEntity(model))
     }
+
+    fun updateUser(model: UserModel) {
+        dao.update(mapper.modelToEntity(model))
+    }
 }

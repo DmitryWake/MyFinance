@@ -11,6 +11,10 @@ import androidx.room.PrimaryKey
 data class UserEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
-    @ColumnInfo(name = "salary")
-    var salary: Int
+    @ColumnInfo(name = "income")
+    var income: Int,
+    @ColumnInfo(name = "outcome")
+    var outcome: Int,
+    @ColumnInfo(name = "balance")
+    var balance: Int
 )

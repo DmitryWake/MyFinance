@@ -1,4 +1,4 @@
-package com.ewake.myfinance.ui.fragment.mainpage
+package com.ewake.myfinance.ui.fragment.splashscreen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,28 +6,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import com.ewake.myfinance.databinding.FragmentMainPageBinding
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.findNavController
+import com.ewake.myfinance.databinding.FragmentSplashScreenBinding
 import com.ewake.myfinance.ui.base.BaseFragment
-import com.ewake.myfinance.ui.model.UserModel
 import javax.inject.Inject
 
 /**
  * @author Nikolaevsky Dmitry (@d.nikolaevskiy)
  */
-class MainPageFragment : BaseFragment() {
+class SplashScreenFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val viewModel by viewModels<MainPageViewModel> { viewModelFactory }
+    private val viewModel by viewModels<SplashScreenViewModel> { viewModelFactory }
 
-    private var _binding: FragmentMainPageBinding? = null
-    private val binding: FragmentMainPageBinding
+    private var _binding: FragmentSplashScreenBinding? = null
+    private val binding: FragmentSplashScreenBinding
         get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appComponent.mainPageComponent().create().inject(this)
+        appComponent.splashScreenComponent().create().inject(this)
         lifecycle.addObserver(viewModel)
     }
 
@@ -36,21 +37,21 @@ class MainPageFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMainPageBinding.inflate(inflater, container, false)
+        _binding = FragmentSplashScreenBinding.inflate(inflater, container, false)
 
         viewModel.apply {
-            userLiveData.observe({ viewLifecycleOwner.lifecycle }, ::setUserData)
+            navigateLiveData.observe({ viewLifecycleOwner.lifecycle }, ::navigate)
         }
 
         return binding.root
     }
 
+    private fun navigate(action: NavDirections) {
+        findNavController().navigate(action)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun setUserData(userModel: UserModel) {
-
     }
 }

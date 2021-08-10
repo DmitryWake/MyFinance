@@ -11,4 +11,5 @@ open class BaseFragment : Fragment() {
 
     val appComponent: AppComponent
         get() = (requireActivity().application as App).appComponent
+
 }

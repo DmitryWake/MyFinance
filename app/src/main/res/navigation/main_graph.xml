@@ -3,12 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
-    app:startDestination="@id/mainPageFragment">
+    app:startDestination="@id/splashScreenFragment">
 
     <fragment
         android:id="@+id/mainPageFragment"
         android:name="com.ewake.myfinance.ui.fragment.mainpage.MainPageFragment"
         android:label="MainPageFragment"
         tools:layout="@layout/fragment_main_page" />
+    <fragment
+        android:id="@+id/splashScreenFragment"
+        android:name="com.ewake.myfinance.ui.fragment.splashscreen.SplashScreenFragment"
+        android:label="SplashScreenFragment"
+        tools:layout="@layout/fragment_splash_screen">
+        <action
+            android:id="@+id/action_splashScreenFragment_to_mainPageFragment"
+            app:destination="@id/mainPageFragment" />
+    </fragment>
 
 </navigation>

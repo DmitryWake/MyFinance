@@ -11,7 +11,7 @@ import javax.inject.Inject
 /**
  * @author Nikolaevsky Dmitry (@d.nikolaevskiy)
  */
-class UserRepository @Inject constructor(appDatabase: AppDatabase) {
+class UserRepository @Inject constructor(appDatabase: AppDatabase): Repository() {
 
     private val dao = appDatabase.userDao()
     private val mapper = UserDatabaseMapper

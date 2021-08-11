@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ewake.myfinance.ui.base.BaseViewModel
 import com.ewake.myfinance.ui.fragment.mainpage.interactor.MainPageInteractor
-import com.ewake.myfinance.ui.model.UserModel
+import com.ewake.myfinance.ui.model.BudgetModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -17,56 +17,56 @@ import javax.inject.Inject
 class MainPageViewModel @Inject constructor(private val loader: MainPageInteractor) :
     BaseViewModel() {
 
-    private val _userLiveData = MutableLiveData<UserModel>()
-    val userLiveData: LiveData<UserModel>
-        get() = _userLiveData
+    private val _budgetLiveData = MutableLiveData<BudgetModel>()
+    val budgetLiveData: LiveData<BudgetModel>
+        get() = _budgetLiveData
 
-    private var userModel: UserModel = UserModel()
+    private var budgetModel: BudgetModel? = null
         set(value) {
             field = value
-            _userLiveData.postValue(value)
+            value?.let { _budgetLiveData.postValue(it) }
         }
 
     override fun onStart() {
-        loadUserData()
+        loadData()
     }
 
-    private fun loadUserData() {
-        loader.getCurrentUser()
+    private fun loadData() {
+        loader.getDailyBudget()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                userModel = it
+                budgetModel = it
             }, {
                 Timber.e(it)
             }).disposeOnCleared()
     }
 
     fun onAddButtonClicked() {
-        val updatedModel = userModel.copy(
-            income = userModel.income + 1,
-            balance = userModel.income + 1 - userModel.outcome
+        val updatedModel = budgetModel?.copy(
+            income = budgetModel!!.income + 1,
+            balance = budgetModel!!.income + 1 - budgetModel!!.outcome
         )
 
-        updateUser(updatedModel)
+        updatedModel?.let { updateBudget(updatedModel) }
     }
 
     fun onMinusButtonClicked() {
-        val updatedModel = userModel.copy(
-            outcome = userModel.outcome + 1,
-            balance = userModel.income  - userModel.outcome - 1
+        val updatedModel = budgetModel?.copy(
+            outcome = budgetModel!!.outcome + 1,
+            balance = budgetModel!!.income - budgetModel!!.outcome - 1
         )
 
-        updateUser(updatedModel)
+        updatedModel?.let { updateBudget(updatedModel) }
     }
 
-    private fun updateUser(model: UserModel) {
+    private fun updateBudget(model: BudgetModel) {
         Single.fromCallable {
-            loader.updateCurrentUser(model)
+            loader.updateBudget(model)
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                userModel = model
+                budgetModel = model
             }, {
                 Timber.e(it)
             })

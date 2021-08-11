@@ -12,7 +12,7 @@ import javax.inject.Singleton
  * @author Nikolaevsky Dmitry (@d.nikolaevskiy)
  */
 @Singleton
-@Component(modules = [AppModule::class, ViewModelBuilderModule::class])
+@Component(modules = [AppModule::class, ViewModelBuilderModule::class, MappersModule::class])
 interface AppComponent {
     @Component.Factory
     interface Factory {

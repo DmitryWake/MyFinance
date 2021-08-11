@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.ewake.myfinance.R
 import com.ewake.myfinance.databinding.FragmentMainPageBinding
 import com.ewake.myfinance.ui.base.BaseFragment
+import com.ewake.myfinance.ui.model.BudgetModel
 import com.ewake.myfinance.ui.model.UserModel
 import javax.inject.Inject
 
@@ -49,7 +50,7 @@ class MainPageFragment : BaseFragment() {
         }
 
         viewModel.apply {
-            userLiveData.observe({ viewLifecycleOwner.lifecycle }, ::setUserData)
+            budgetLiveData.observe({ viewLifecycleOwner.lifecycle }, ::setUserData)
         }
 
         return binding.root
@@ -60,7 +61,7 @@ class MainPageFragment : BaseFragment() {
         _binding = null
     }
 
-    private fun setUserData(userModel: UserModel) {
+    private fun setUserData(userModel: BudgetModel) {
         binding.apply {
             income.text = getString(R.string.fragment_main_page_income, userModel.income.toString())
             outcome.text =

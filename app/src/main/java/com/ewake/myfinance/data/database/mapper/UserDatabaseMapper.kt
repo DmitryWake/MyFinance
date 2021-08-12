@@ -1,7 +1,7 @@
 package com.ewake.myfinance.data.database.mapper
 
-import com.ewake.myfinance.data.database.entity.UserEntity
-import com.ewake.myfinance.ui.model.UserModel
+import com.ewake.myfinance.data.database.entity.UserSettingsEntity
+import com.ewake.myfinance.ui.model.UserSettingsModel
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 
@@ -9,7 +9,7 @@ import org.mapstruct.factory.Mappers
  * @author Nikolaevsky Dmitry (@d.nikolaevskiy)
  */
 @Mapper
-interface UserDatabaseMapper : BaseDatabaseMapper<UserEntity, UserModel> {
+interface UserDatabaseMapper : BaseDatabaseMapper<UserSettingsEntity, UserSettingsModel> {
     companion object : UserDatabaseMapper by INSTANCE
 }
 

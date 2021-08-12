@@ -1,14 +1,20 @@
 package com.ewake.myfinance.ui.model
 
 import java.util.*
+import kotlin.math.absoluteValue
 
 /**
  * @author Nikolaevsky Dmitry (@d.nikolaevskiy)
  */
-data class BudgetModel(
-    var income: Int = 0,
-    var outcome: Int = 0,
-    var balance: Int = 0,
+class BudgetModel(
     var date: Date = Date(),
-    var categoriesOutcome: Map<CategoryModel, Int> = mapOf()
-)
+    var transactions: MutableList<TransactionModel> = mutableListOf(),
+    var transferBalance: Int = 0
+) {
+    val balance: Int
+        get() = transactions.sumOf { it.summ } + transferBalance
+    val income: Int
+        get() = transactions.sumOf { if (it.summ > 0) it.summ else 0 }
+    val outcome: Int
+        get() = transactions.sumOf { if (it.summ < 0) it.summ else 0 }.absoluteValue
+}

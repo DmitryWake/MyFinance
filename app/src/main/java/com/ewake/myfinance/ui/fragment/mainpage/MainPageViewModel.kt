@@ -5,10 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import com.ewake.myfinance.ui.base.BaseViewModel
 import com.ewake.myfinance.ui.fragment.mainpage.interactor.MainPageInteractor
 import com.ewake.myfinance.ui.model.BudgetModel
+import com.ewake.myfinance.ui.model.TransactionModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -43,21 +45,19 @@ class MainPageViewModel @Inject constructor(private val loader: MainPageInteract
     }
 
     fun onAddButtonClicked() {
-        val updatedModel = budgetModel?.copy(
-            income = budgetModel!!.income + 1,
-            balance = budgetModel!!.income + 1 - budgetModel!!.outcome
-        )
-
-        updatedModel?.let { updateBudget(updatedModel) }
+        budgetModel?.let {
+            val transactionModel = TransactionModel(Date().time, 1)
+            val newModel = it.also { it.transactions.add(transactionModel) }
+            updateBudget(newModel)
+        }
     }
 
     fun onMinusButtonClicked() {
-        val updatedModel = budgetModel?.copy(
-            outcome = budgetModel!!.outcome + 1,
-            balance = budgetModel!!.income - budgetModel!!.outcome - 1
-        )
-
-        updatedModel?.let { updateBudget(updatedModel) }
+        budgetModel?.let {
+            val transactionModel = TransactionModel(Date().time, -1)
+            val newModel = it.also { it.transactions.add(transactionModel) }
+            updateBudget(newModel)
+        }
     }
 
     private fun updateBudget(model: BudgetModel) {

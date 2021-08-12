@@ -6,7 +6,7 @@ import androidx.navigation.NavDirections
 import com.ewake.myfinance.ui.base.BaseViewModel
 import com.ewake.myfinance.ui.fragment.splashscreen.interactor.SplashScreenInteractor
 import com.ewake.myfinance.ui.model.BudgetModel
-import com.ewake.myfinance.ui.model.UserModel
+import com.ewake.myfinance.ui.model.UserSettingsModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -45,7 +45,11 @@ class SplashScreenViewModel @Inject constructor(private val loader: SplashScreen
                     newList.last().date.month != today.month ||
                     newList.last().date.year != today.year
                 ) {
-                    newList.add(BudgetModel())
+                    newList.add(
+                        BudgetModel(
+                            transferBalance = newList.last().balance
+                        )
+                    )
                 }
 
                 saveBudget(newList)
@@ -77,7 +81,7 @@ class SplashScreenViewModel @Inject constructor(private val loader: SplashScreen
     }
 
     private fun createUser() {
-        Single.fromCallable { loader.createUser(UserModel()) }
+        Single.fromCallable { loader.createUser(UserSettingsModel()) }
             .subscribeOn(Schedulers.io())
             .subscribe()
             .disposeOnCleared()

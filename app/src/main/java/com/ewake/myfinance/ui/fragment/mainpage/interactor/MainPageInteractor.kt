@@ -3,7 +3,7 @@ package com.ewake.myfinance.ui.fragment.mainpage.interactor
 import com.ewake.myfinance.data.repository.BudgetRepository
 import com.ewake.myfinance.data.repository.UserRepository
 import com.ewake.myfinance.ui.model.BudgetModel
-import com.ewake.myfinance.ui.model.UserModel
+import com.ewake.myfinance.ui.model.UserSettingsModel
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
@@ -16,11 +16,11 @@ class MainPageInteractor @Inject constructor(
     private val budgetRepository: BudgetRepository
 ) {
 
-    fun getCurrentUser(): Maybe<UserModel> {
+    fun getCurrentUser(): Maybe<UserSettingsModel> {
         return userRepository.loadUser()
     }
 
-    fun updateCurrentUser(model: UserModel) {
+    fun updateCurrentUser(model: UserSettingsModel) {
         userRepository.updateUser(model)
     }
 

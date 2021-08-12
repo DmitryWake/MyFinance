@@ -2,6 +2,7 @@ package com.ewake.myfinance.data.database.typeconverter
 
 import androidx.room.TypeConverter
 import com.ewake.myfinance.ui.model.CategoryModel
+import com.ewake.myfinance.ui.model.TransactionModel
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.text.SimpleDateFormat
@@ -16,15 +17,15 @@ class BudgetTypeConverter {
     private val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
 
     @TypeConverter
-    fun fromCategoriesOutcome(categoriesOutcome: Map<CategoryModel, Int>): String {
-        return gson.toJson(categoriesOutcome)
+    fun fromCategoriesOutcome(transactions: List<TransactionModel>): String {
+        return gson.toJson(transactions)
     }
 
     @TypeConverter
-    fun fromString(categoriesOutcome: String): Map<CategoryModel, Int> {
+    fun fromString(transactions: String): List<TransactionModel> {
         return gson.fromJson(
-            categoriesOutcome,
-            object : TypeToken<Map<CategoryModel, Int>>() {}.type
+            transactions,
+            object : TypeToken<List<TransactionModel>>() {}.type
         )
     }
 

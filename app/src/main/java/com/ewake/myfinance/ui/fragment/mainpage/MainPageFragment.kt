@@ -10,7 +10,6 @@ import com.ewake.myfinance.R
 import com.ewake.myfinance.databinding.FragmentMainPageBinding
 import com.ewake.myfinance.ui.base.BaseFragment
 import com.ewake.myfinance.ui.model.BudgetModel
-import com.ewake.myfinance.ui.model.UserModel
 import javax.inject.Inject
 
 /**
@@ -61,13 +60,13 @@ class MainPageFragment : BaseFragment() {
         _binding = null
     }
 
-    private fun setUserData(userModel: BudgetModel) {
+    private fun setUserData(model: BudgetModel) {
         binding.apply {
-            income.text = getString(R.string.fragment_main_page_income, userModel.income.toString())
+            income.text = getString(R.string.fragment_main_page_income, model.income.toString())
             outcome.text =
-                getString(R.string.fragment_main_page_outcome, userModel.outcome.toString())
+                getString(R.string.fragment_main_page_outcome, model.outcome.toString())
             balance.text =
-                getString(R.string.fragment_main_page_balance, userModel.balance.toString())
+                getString(R.string.fragment_main_page_balance, model.balance.toString())
         }
     }
 }

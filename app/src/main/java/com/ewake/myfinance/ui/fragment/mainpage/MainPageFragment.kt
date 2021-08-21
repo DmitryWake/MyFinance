@@ -67,6 +67,10 @@ class MainPageFragment : BaseFragment() {
                 getString(R.string.fragment_main_page_outcome, model.outcome.toString())
             balance.text =
                 getString(R.string.fragment_main_page_balance, model.balance.toString())
+            transferBalance.text = getString(
+                R.string.fragment_main_page_balance_transfer,
+                model.transferBalance.toString()
+            )
         }
     }
 }

@@ -1,11 +1,9 @@
 package com.ewake.myfinance.ui.fragment.splashscreen.interactor
 
-import com.ewake.myfinance.data.repository.BudgetRepository
+import com.ewake.myfinance.data.repository.BudgetRepositoryImpl
 import com.ewake.myfinance.data.repository.UserRepository
-import com.ewake.myfinance.ui.model.BudgetModel
 import com.ewake.myfinance.ui.model.UserSettingsModel
 import io.reactivex.rxjava3.core.Maybe
-import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 
 /**
@@ -13,7 +11,7 @@ import javax.inject.Inject
  */
 class SplashScreenInteractor @Inject constructor(
     private val userRepository: UserRepository,
-    private var budgetRepository: BudgetRepository
+    private var budgetRepository: BudgetRepositoryImpl
 ) {
 
     fun loadUser(): Maybe<UserSettingsModel> {
@@ -22,13 +20,5 @@ class SplashScreenInteractor @Inject constructor(
 
     fun createUser(userModel: UserSettingsModel) {
         userRepository.createUser(userModel)
-    }
-
-    fun loadBudget(): Single<List<BudgetModel>> {
-        return budgetRepository.getAll()
-    }
-
-    fun saveBudget(list: List<BudgetModel>) {
-        budgetRepository.saveBudget(list)
     }
 }

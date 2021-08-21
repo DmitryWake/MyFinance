@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.ewake.myfinance.ui.base.BaseViewModel
 import com.ewake.myfinance.ui.fragment.mainpage.interactor.MainPageInteractor
 import com.ewake.myfinance.ui.model.BudgetModel
+import com.ewake.myfinance.ui.model.PeriodType
 import com.ewake.myfinance.ui.model.TransactionModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
@@ -34,7 +35,7 @@ class MainPageViewModel @Inject constructor(private val loader: MainPageInteract
     }
 
     private fun loadData() {
-        loader.getDailyBudget()
+        loader.getBudget(Date(), PeriodType.DAY)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -45,28 +46,31 @@ class MainPageViewModel @Inject constructor(private val loader: MainPageInteract
     }
 
     fun onAddButtonClicked() {
-        budgetModel?.let {
-            val transactionModel = TransactionModel(Date().time, 1)
-            val newModel = it.also { it.transactions.add(transactionModel) }
-            updateBudget(newModel)
-        }
+        val transactionModel = TransactionModel(
+            id = Date().time,
+            date = Date(),
+            value = 1
+        )
+        saveTransaction(transactionModel)
     }
 
     fun onMinusButtonClicked() {
-        budgetModel?.let {
-            val transactionModel = TransactionModel(Date().time, -1)
-            val newModel = it.also { it.transactions.add(transactionModel) }
-            updateBudget(newModel)
-        }
+        val transactionModel = TransactionModel(
+            id = Date().time,
+            date = Date(),
+            value = -1
+        )
+        saveTransaction(transactionModel)
     }
 
-    private fun updateBudget(model: BudgetModel) {
+    private fun saveTransaction(model: TransactionModel) {
         Single.fromCallable {
-            loader.updateBudget(model)
+            loader.saveTransaction(model)
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                budgetModel = model
+                budgetModel?.transactions?.add(model)
+                _budgetLiveData.postValue(budgetModel)
             }, {
                 Timber.e(it)
             })

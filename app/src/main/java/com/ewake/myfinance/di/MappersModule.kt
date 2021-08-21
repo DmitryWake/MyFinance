@@ -1,6 +1,6 @@
 package com.ewake.myfinance.di
 
-import com.ewake.myfinance.data.database.mapper.BudgetMapper
+import com.ewake.myfinance.data.database.mapper.TransactionDatabaseMapper
 import com.ewake.myfinance.data.database.mapper.UserDatabaseMapper
 import dagger.Module
 import dagger.Provides
@@ -14,5 +14,6 @@ class MappersModule {
     fun provideUserDatabaseMapper(): UserDatabaseMapper = UserDatabaseMapper.Companion
 
     @Provides
-    fun provideBudgetDatabaseMapper(): BudgetMapper = BudgetMapper.Companion
+    fun provideTransactionDatabaseMapper(): TransactionDatabaseMapper =
+        TransactionDatabaseMapper.Companion
 }

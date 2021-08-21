@@ -1,11 +1,14 @@
 package com.ewake.myfinance.ui.fragment.mainpage.interactor
 
-import com.ewake.myfinance.data.repository.BudgetRepository
+import com.ewake.myfinance.data.repository.BudgetRepositoryImpl
 import com.ewake.myfinance.data.repository.UserRepository
 import com.ewake.myfinance.ui.model.BudgetModel
+import com.ewake.myfinance.ui.model.PeriodType
+import com.ewake.myfinance.ui.model.TransactionModel
 import com.ewake.myfinance.ui.model.UserSettingsModel
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Single
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -13,7 +16,7 @@ import javax.inject.Inject
  */
 class MainPageInteractor @Inject constructor(
     private val userRepository: UserRepository,
-    private val budgetRepository: BudgetRepository
+    private val budgetRepository: BudgetRepositoryImpl
 ) {
 
     fun getCurrentUser(): Maybe<UserSettingsModel> {
@@ -24,9 +27,10 @@ class MainPageInteractor @Inject constructor(
         userRepository.updateUser(model)
     }
 
-    fun getDailyBudget(): Single<BudgetModel> = budgetRepository.getDailyBudget()
+    fun getBudget(date: Date, type: PeriodType): Single<BudgetModel> =
+        budgetRepository.getBudget(date, type)
 
-    fun updateBudget(budgetModel: BudgetModel) {
-        budgetRepository.updateBudget(budgetModel)
+    fun saveTransaction(transactionModel: TransactionModel) {
+        budgetRepository.saveTransaction(transactionModel)
     }
 }

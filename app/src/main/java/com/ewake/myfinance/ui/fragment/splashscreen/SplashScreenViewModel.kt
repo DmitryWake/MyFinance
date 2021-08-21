@@ -26,57 +26,17 @@ class SplashScreenViewModel @Inject constructor(private val loader: SplashScreen
 
     override fun onStart() {
         checkUser()
-        sync()
-    }
-
-    private fun sync() {
-        loader.loadBudget().subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                // TODO Вынести логику в репозиторий и добавить перенос остатка
-                val newList = it.toMutableList()
-                newList.sortBy { item -> item.date }
-
-                val today = Date()
-
-                if (newList.isEmpty()) {
-                    newList.add(BudgetModel())
-                } else if (newList.last().date.date != today.date ||
-                    newList.last().date.month != today.month ||
-                    newList.last().date.year != today.year
-                ) {
-                    newList.add(
-                        BudgetModel(
-                            transferBalance = newList.last().balance
-                        )
-                    )
-                }
-
-                saveBudget(newList)
-
-            }, {
-                Timber.e(it)
-            })
-    }
-
-    private fun saveBudget(newList: List<BudgetModel>) {
-        Single.fromCallable {
-            loader.saveBudget(newList)
-        }.subscribeOn(Schedulers.io())
-            .subscribe({
-                _navigateLiveData.postValue(
-                    SplashScreenFragmentDirections.actionSplashScreenFragmentToMainPageFragment()
-                )
-            }, {
-                Timber.e(it)
-            })
     }
 
     private fun checkUser() {
         loader.loadUser().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete { createUser() }
-            .subscribe()
+            .subscribe({
+                _navigateLiveData.postValue(SplashScreenFragmentDirections.actionSplashScreenFragmentToMainPageFragment())
+            }, {
+                Timber.e(it)
+            })
             .disposeOnCleared()
     }
 

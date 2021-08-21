@@ -12,9 +12,9 @@ class BudgetModel(
     var transferBalance: Int = 0
 ) {
     val balance: Int
-        get() = transactions.sumOf { it.summ } + transferBalance
+        get() = transactions.sumOf { it.value } + transferBalance
     val income: Int
-        get() = transactions.sumOf { if (it.summ > 0) it.summ else 0 }
+        get() = transactions.sumOf { if (it.value > 0) it.value else 0 }
     val outcome: Int
-        get() = transactions.sumOf { if (it.summ < 0) it.summ else 0 }.absoluteValue
+        get() = transactions.sumOf { if (it.value < 0) it.value else 0 }.absoluteValue
 }

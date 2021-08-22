@@ -35,7 +35,7 @@ class MainPageViewModel @Inject constructor(private val loader: MainPageInteract
     }
 
     private fun loadData() {
-        loader.getBudget(Date(), PeriodType.DAY)
+        loader.getBudget(Date(), PeriodType.MONTH)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

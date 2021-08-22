@@ -5,19 +5,48 @@
     android:id="@+id/main_graph"
     app:startDestination="@id/splashScreenFragment">
 
-    <fragment
-        android:id="@+id/mainPageFragment"
-        android:name="com.ewake.myfinance.ui.fragment.mainpage.MainPageFragment"
-        android:label="MainPageFragment"
-        tools:layout="@layout/fragment_main_page" />
+    <navigation
+        android:id="@+id/main_page_graph"
+        app:startDestination="@id/mainPageFragment">
+
+        <fragment
+            android:id="@+id/mainPageFragment"
+            android:name="com.ewake.myfinance.ui.fragment.mainpage.MainPageFragment"
+            android:label="MainPageFragment"
+            tools:layout="@layout/fragment_main_page" />
+
+    </navigation>
+
     <fragment
         android:id="@+id/splashScreenFragment"
         android:name="com.ewake.myfinance.ui.fragment.splashscreen.SplashScreenFragment"
         android:label="SplashScreenFragment"
         tools:layout="@layout/fragment_splash_screen">
         <action
-            android:id="@+id/action_splashScreenFragment_to_mainPageFragment"
-            app:destination="@id/mainPageFragment" />
+            android:id="@+id/action_splashScreenFragment_to_main_page_graph"
+            app:destination="@id/main_page_graph" />
     </fragment>
+
+    <navigation
+        android:id="@+id/settings_graph"
+        app:startDestination="@id/settingsFragment">
+
+        <fragment
+            android:id="@+id/settingsFragment"
+            android:name="com.ewake.myfinance.ui.fragment.settings.SettingsFragment"
+            android:label="SettingsFragment"
+            tools:layout="@layout/fragment_settings" />
+
+    </navigation>
+
+    <navigation
+        android:id="@+id/history_graph"
+        app:startDestination="@id/historyFragment">
+        <fragment
+            android:id="@+id/historyFragment"
+            android:name="com.ewake.myfinance.ui.fragment.history.HistoryFragment"
+            android:label="HistoryFragment"
+            tools:layout="@layout/fragment_history" />
+    </navigation>
 
 </navigation>

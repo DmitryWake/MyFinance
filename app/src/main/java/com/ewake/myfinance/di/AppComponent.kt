@@ -2,7 +2,9 @@ package com.ewake.myfinance.di
 
 import android.content.Context
 import com.ewake.myfinance.di.viewmodel.ViewModelBuilderModule
+import com.ewake.myfinance.ui.fragment.history.di.HistoryComponent
 import com.ewake.myfinance.ui.fragment.mainpage.di.MainPageComponent
+import com.ewake.myfinance.ui.fragment.settings.di.SettingsComponent
 import com.ewake.myfinance.ui.fragment.splashscreen.di.SplashScreenComponent
 import dagger.BindsInstance
 import dagger.Component
@@ -29,4 +31,6 @@ interface AppComponent {
 
     fun mainPageComponent(): MainPageComponent.Factory
     fun splashScreenComponent(): SplashScreenComponent.Factory
+    fun settingsComponent(): SettingsComponent.Factory
+    fun historyComponent(): HistoryComponent.Factory
 }

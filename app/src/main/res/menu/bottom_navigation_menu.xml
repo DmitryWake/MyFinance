@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/mainPageFragment"
+        android:id="@+id/main_page_graph"
         android:title="Главная" />
 
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/history_graph"
         android:title="История" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/settings_graph"
         android:title="Настройки" />
 
 </menu>

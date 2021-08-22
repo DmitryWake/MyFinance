@@ -33,7 +33,7 @@ class SplashScreenViewModel @Inject constructor(private val loader: SplashScreen
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete { createUser() }
             .subscribe({
-                _navigateLiveData.postValue(SplashScreenFragmentDirections.actionSplashScreenFragmentToMainPageFragment())
+                _navigateLiveData.postValue(SplashScreenFragmentDirections.actionSplashScreenFragmentToMainPageGraph())
             }, {
                 Timber.e(it)
             })

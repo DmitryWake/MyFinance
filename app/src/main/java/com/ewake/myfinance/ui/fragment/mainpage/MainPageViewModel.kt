@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.ewake.myfinance.ui.base.BaseViewModel
 import com.ewake.myfinance.ui.fragment.mainpage.interactor.MainPageInteractor
 import com.ewake.myfinance.ui.model.BudgetModel
+import com.ewake.myfinance.ui.model.CategoryModel
 import com.ewake.myfinance.ui.model.PeriodType
 import com.ewake.myfinance.ui.model.TransactionModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -24,6 +25,9 @@ class MainPageViewModel @Inject constructor(private val loader: MainPageInteract
     val budgetLiveData: LiveData<BudgetModel>
         get() = _budgetLiveData
 
+    private val _categoriesLiveData = MutableLiveData<List<CategoryModel>>()
+    val categoriesLiveData: LiveData<List<CategoryModel>> = _categoriesLiveData
+
     private var budgetModel: BudgetModel? = null
         set(value) {
             field = value
@@ -31,7 +35,21 @@ class MainPageViewModel @Inject constructor(private val loader: MainPageInteract
         }
 
     override fun onStart() {
+        loadCategories()
         loadData()
+    }
+
+    private fun loadCategories() {
+        loader.getCategories()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    _categoriesLiveData.postValue(it)
+                }, {
+                    Timber.e(it)
+                }
+            )
     }
 
     private fun loadData() {

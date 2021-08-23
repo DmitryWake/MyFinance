@@ -10,6 +10,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.ewake.myfinance.databinding.FragmentSplashScreenBinding
 import com.ewake.myfinance.ui.base.BaseFragment
+import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 /**
@@ -41,6 +42,7 @@ class SplashScreenFragment : BaseFragment() {
 
         viewModel.apply {
             navigateLiveData.observe({ viewLifecycleOwner.lifecycle }, ::navigate)
+            errorLiveData.observe(viewLifecycleOwner, ::showError)
         }
 
         return binding.root
@@ -48,6 +50,10 @@ class SplashScreenFragment : BaseFragment() {
 
     private fun navigate(action: NavDirections) {
         findNavController().navigate(action)
+    }
+
+    private fun showError(error: String) {
+        Snackbar.make(binding.root, error, Snackbar.LENGTH_LONG).show()
     }
 
     override fun onDestroyView() {

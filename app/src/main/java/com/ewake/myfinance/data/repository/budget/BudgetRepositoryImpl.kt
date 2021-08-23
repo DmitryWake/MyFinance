@@ -1,8 +1,7 @@
-package com.ewake.myfinance.data.repository
+package com.ewake.myfinance.data.repository.budget
 
 import com.ewake.myfinance.data.database.AppDatabase
 import com.ewake.myfinance.data.database.mapper.TransactionDatabaseMapper
-import com.ewake.myfinance.data.repository.budget.BudgetRepository
 import com.ewake.myfinance.ui.model.BudgetModel
 import com.ewake.myfinance.ui.model.PeriodType
 import com.ewake.myfinance.ui.model.TransactionModel

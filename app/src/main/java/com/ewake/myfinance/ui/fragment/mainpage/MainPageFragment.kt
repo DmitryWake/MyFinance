@@ -6,10 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ewake.myfinance.R
 import com.ewake.myfinance.databinding.FragmentMainPageBinding
 import com.ewake.myfinance.ui.base.BaseFragment
+import com.ewake.myfinance.ui.fragment.mainpage.adapter.CategoriesAdapter
 import com.ewake.myfinance.ui.model.BudgetModel
+import com.ewake.myfinance.ui.model.CategoryModel
 import javax.inject.Inject
 
 /**
@@ -25,6 +28,8 @@ class MainPageFragment : BaseFragment() {
     private var _binding: FragmentMainPageBinding? = null
     private val binding: FragmentMainPageBinding
         get() = _binding!!
+
+    private val categoriesAdapter = CategoriesAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,10 +51,15 @@ class MainPageFragment : BaseFragment() {
             minus.setOnClickListener {
                 viewModel.onMinusButtonClicked()
             }
+            categories.apply {
+                adapter = categoriesAdapter
+                layoutManager = LinearLayoutManager(requireContext())
+            }
         }
 
         viewModel.apply {
             budgetLiveData.observe({ viewLifecycleOwner.lifecycle }, ::setUserData)
+            categoriesLiveData.observe(viewLifecycleOwner, ::setCategories)
         }
 
         return binding.root
@@ -72,5 +82,9 @@ class MainPageFragment : BaseFragment() {
                 model.transferBalance.toString()
             )
         }
+    }
+
+    private fun setCategories(list: List<CategoryModel>) {
+        categoriesAdapter.items = list
     }
 }

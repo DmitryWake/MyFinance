@@ -4,14 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavDirections
 import com.ewake.myfinance.ui.base.BaseViewModel
+import com.ewake.myfinance.ui.base.SingleEventLiveData
 import com.ewake.myfinance.ui.fragment.splashscreen.interactor.SplashScreenInteractor
-import com.ewake.myfinance.ui.model.BudgetModel
 import com.ewake.myfinance.ui.model.UserSettingsModel
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -21,20 +19,27 @@ class SplashScreenViewModel @Inject constructor(private val loader: SplashScreen
     BaseViewModel() {
 
     private val _navigateLiveData = MutableLiveData<NavDirections>()
-    val navigateLiveData: LiveData<NavDirections>
-        get() = _navigateLiveData
+    val navigateLiveData: LiveData<NavDirections> = _navigateLiveData
+
+    private val _errorLiveData = SingleEventLiveData<String>()
+    val errorLiveData: LiveData<String> = _errorLiveData
 
     override fun onStart() {
-        checkUser()
+        sync()
     }
 
-    private fun checkUser() {
+    // FIXME Поправить навигацию и синхронизацию
+    private fun sync() {
         loader.loadUser().subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnComplete { createUser() }
+            .doOnComplete {
+                createUser()
+                syncCategories()
+                _navigateLiveData.postValue(SplashScreenFragmentDirections.actionSplashScreenFragmentToMainPageGraph())
+            }
             .subscribe({
                 _navigateLiveData.postValue(SplashScreenFragmentDirections.actionSplashScreenFragmentToMainPageGraph())
             }, {
+                _errorLiveData.postValue(it.message)
                 Timber.e(it)
             })
             .disposeOnCleared()
@@ -45,5 +50,16 @@ class SplashScreenViewModel @Inject constructor(private val loader: SplashScreen
             .subscribeOn(Schedulers.io())
             .subscribe()
             .disposeOnCleared()
+    }
+
+    private fun syncCategories() {
+        loader.checkCategoriesExists()
+            .subscribeOn(Schedulers.io())
+            .subscribe({
+                if (it) loader.initCategories()
+            }, {
+                _errorLiveData.postValue(it.message)
+                Timber.e(it)
+            })
     }
 }

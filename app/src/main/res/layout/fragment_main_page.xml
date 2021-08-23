@@ -63,49 +63,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/outcome" />
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/categories"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/transfer_balance">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/day"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginHorizontal="10dp"
-                android:text="День"
-                android:textSize="11sp"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/week"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginHorizontal="10dp"
-                android:text="Неделя"
-                android:textSize="11sp"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/month"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginHorizontal="10dp"
-                android:textSize="11sp"
-                android:text="Месяц" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/year"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginHorizontal="10dp"
-                android:textSize="11sp"
-                android:text="Год" />
-
-        </LinearLayout>
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            app:layout_constraintBottom_toTopOf="@id/balance"
+            app:layout_constraintTop_toBottomOf="@id/transfer_balance"
+            tools:listitem="@layout/item_category"/>
 
         <TextView
             android:id="@+id/balance"
@@ -145,4 +110,5 @@
             app:layout_constraintTop_toTopOf="@id/balance" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

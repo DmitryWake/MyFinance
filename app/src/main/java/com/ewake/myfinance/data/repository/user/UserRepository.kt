@@ -1,7 +1,8 @@
-package com.ewake.myfinance.data.repository
+package com.ewake.myfinance.data.repository.user
 
 import com.ewake.myfinance.data.database.AppDatabase
 import com.ewake.myfinance.data.database.mapper.UserDatabaseMapper
+import com.ewake.myfinance.data.repository.Repository
 import com.ewake.myfinance.ui.model.UserSettingsModel
 import io.reactivex.rxjava3.core.Maybe
 import javax.inject.Inject

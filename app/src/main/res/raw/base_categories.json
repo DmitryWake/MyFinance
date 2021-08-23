@@ -1,0 +1,32 @@
+[
+  {
+    "id": "0",
+    "name": "Еда",
+    "limit": null
+  },
+  {
+    "id": "1",
+    "name": "Кафе",
+    "limit": null
+  },
+  {
+    "id": "2",
+    "name": "Такси",
+    "limit": null
+  },
+  {
+    "id": "3",
+    "name": "Здоровье",
+    "limit": null
+  },
+  {
+    "id": "4",
+    "name": "Подарки",
+    "limit": null
+  },
+  {
+    "id": "5",
+    "name": "Транспорт",
+    "limit": null
+  }
+]

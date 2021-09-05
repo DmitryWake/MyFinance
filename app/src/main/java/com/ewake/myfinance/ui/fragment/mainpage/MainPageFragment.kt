@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ewake.myfinance.R
 import com.ewake.myfinance.databinding.FragmentMainPageBinding
 import com.ewake.myfinance.ui.base.BaseFragment
+import com.ewake.myfinance.ui.dialog.createtransactiondialog.CreateTransactionDialog
 import com.ewake.myfinance.ui.fragment.mainpage.adapter.CategoriesAdapter
 import com.ewake.myfinance.ui.model.BudgetModel
 import com.ewake.myfinance.ui.model.CategoryExpensesModel
@@ -31,6 +32,10 @@ class MainPageFragment : BaseFragment() {
         get() = _binding!!
 
     private val categoriesAdapter = CategoriesAdapter()
+
+    private val onPositiveButtonClickListener: (Int, CategoryModel) -> Unit = { value, model ->
+        viewModel.onDialogResult(value, model)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,8 +64,9 @@ class MainPageFragment : BaseFragment() {
         }
 
         viewModel.apply {
-            budgetLiveData.observe({ viewLifecycleOwner.lifecycle }, ::setUserData)
+            budgetLiveData.observe(viewLifecycleOwner, ::setUserData)
             categoriesLiveData.observe(viewLifecycleOwner, ::setCategories)
+            dialogLiveData.observe(viewLifecycleOwner, ::showDialog)
         }
 
         return binding.root
@@ -87,5 +93,19 @@ class MainPageFragment : BaseFragment() {
 
     private fun setCategories(list: List<CategoryExpensesModel>) {
         categoriesAdapter.items = list
+    }
+
+    private fun showDialog(list: List<CategoryModel>) {
+        val builder = CreateTransactionDialog.Builder()
+        val dialog = builder.setCategories(list)
+            .setTitle("Добавить новый расход")
+            .setOnPositiveButtonClickListener(onPositiveButtonClickListener)
+            .build()
+
+        dialog.show(childFragmentManager, ADD_DIALOG_TAG)
+    }
+
+    companion object {
+        private const val ADD_DIALOG_TAG = "addDialog"
     }
 }

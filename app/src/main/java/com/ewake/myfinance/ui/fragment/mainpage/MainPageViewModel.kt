@@ -25,6 +25,9 @@ class MainPageViewModel @Inject constructor(private val loader: MainPageInteract
     private val _categoriesLiveData = MutableLiveData<List<CategoryExpensesModel>>()
     val categoriesLiveData: LiveData<List<CategoryExpensesModel>> = _categoriesLiveData
 
+    private val _dialogLiveData = MutableLiveData<List<CategoryModel>>()
+    val dialogLiveData: LiveData<List<CategoryModel>> = _dialogLiveData
+
     private var categories: List<CategoryModel> = listOf()
 
     private var budgetModel: BudgetModel? = null
@@ -98,12 +101,7 @@ class MainPageViewModel @Inject constructor(private val loader: MainPageInteract
     }
 
     fun onMinusButtonClicked() {
-        val transactionModel = TransactionModel(
-            id = Date().time,
-            date = Date(),
-            value = -1
-        )
-        saveTransaction(transactionModel)
+        _dialogLiveData.postValue(categories)
     }
 
     private fun saveTransaction(model: TransactionModel) {
@@ -117,5 +115,18 @@ class MainPageViewModel @Inject constructor(private val loader: MainPageInteract
             }, {
                 Timber.e(it)
             })
+    }
+
+    fun onDialogResult(value: Int, model: CategoryModel) {
+        if (categories.contains(model)) {
+            saveTransaction(
+                TransactionModel(
+                    id = Date().time,
+                    date = Date(),
+                    value = -1 * value,
+                    categoryModel = model
+                )
+            )
+        }
     }
 }

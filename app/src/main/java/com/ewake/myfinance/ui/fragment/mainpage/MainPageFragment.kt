@@ -12,6 +12,7 @@ import com.ewake.myfinance.databinding.FragmentMainPageBinding
 import com.ewake.myfinance.ui.base.BaseFragment
 import com.ewake.myfinance.ui.fragment.mainpage.adapter.CategoriesAdapter
 import com.ewake.myfinance.ui.model.BudgetModel
+import com.ewake.myfinance.ui.model.CategoryExpensesModel
 import com.ewake.myfinance.ui.model.CategoryModel
 import javax.inject.Inject
 
@@ -84,7 +85,7 @@ class MainPageFragment : BaseFragment() {
         }
     }
 
-    private fun setCategories(list: List<CategoryModel>) {
+    private fun setCategories(list: List<CategoryExpensesModel>) {
         categoriesAdapter.items = list
     }
 }

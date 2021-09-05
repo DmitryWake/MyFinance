@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ewake.myfinance.ui.base.BaseViewModel
 import com.ewake.myfinance.ui.fragment.mainpage.interactor.MainPageInteractor
-import com.ewake.myfinance.ui.model.BudgetModel
-import com.ewake.myfinance.ui.model.CategoryModel
-import com.ewake.myfinance.ui.model.PeriodType
-import com.ewake.myfinance.ui.model.TransactionModel
+import com.ewake.myfinance.ui.model.*
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -25,8 +22,10 @@ class MainPageViewModel @Inject constructor(private val loader: MainPageInteract
     val budgetLiveData: LiveData<BudgetModel>
         get() = _budgetLiveData
 
-    private val _categoriesLiveData = MutableLiveData<List<CategoryModel>>()
-    val categoriesLiveData: LiveData<List<CategoryModel>> = _categoriesLiveData
+    private val _categoriesLiveData = MutableLiveData<List<CategoryExpensesModel>>()
+    val categoriesLiveData: LiveData<List<CategoryExpensesModel>> = _categoriesLiveData
+
+    private var categories: List<CategoryModel> = listOf()
 
     private var budgetModel: BudgetModel? = null
         set(value) {
@@ -45,7 +44,7 @@ class MainPageViewModel @Inject constructor(private val loader: MainPageInteract
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    _categoriesLiveData.postValue(it)
+                    categories = it
                 }, {
                     Timber.e(it)
                 }
@@ -57,10 +56,36 @@ class MainPageViewModel @Inject constructor(private val loader: MainPageInteract
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                budgetModel = it
+                processBudget(it)
             }, {
                 Timber.e(it)
             }).disposeOnCleared()
+    }
+
+    private fun processBudget(budgetModel: BudgetModel) {
+        val categoryExpensesList =
+            categories.map { CategoryExpensesModel(categoryModel = it) }.toMutableList()
+        val categoryTransactions = budgetModel.transactions.groupBy { it.categoryModel?.id }
+
+        categoryTransactions.keys.forEach { key ->
+            val value = categoryTransactions[key]!!.sumOf { it.value }
+
+            categoryExpensesList.find { it.categoryModel?.id == key }.let { model ->
+                if (model == null) {
+                    categoryExpensesList.add(
+                        CategoryExpensesModel(
+                            value = value
+                        )
+                    )
+                } else {
+                    model.value = value
+                }
+            }
+        }
+
+
+        this.budgetModel = budgetModel
+        _categoriesLiveData.postValue(categoryExpensesList)
     }
 
     fun onAddButtonClicked() {
@@ -88,7 +113,7 @@ class MainPageViewModel @Inject constructor(private val loader: MainPageInteract
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 budgetModel?.transactions?.add(model)
-                _budgetLiveData.postValue(budgetModel)
+                budgetModel?.let { processBudget(it) }
             }, {
                 Timber.e(it)
             })

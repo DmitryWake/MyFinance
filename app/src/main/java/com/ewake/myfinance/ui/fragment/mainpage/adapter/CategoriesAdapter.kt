@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ewake.myfinance.databinding.ItemCategoryBinding
+import com.ewake.myfinance.ui.model.CategoryExpensesModel
 import com.ewake.myfinance.ui.model.CategoryModel
 
 /**
@@ -11,7 +12,7 @@ import com.ewake.myfinance.ui.model.CategoryModel
  */
 class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.CategoriesViewHolder>() {
 
-    var items: List<CategoryModel> = listOf()
+    var items: List<CategoryExpensesModel> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -33,9 +34,11 @@ class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.CategoriesViewH
     inner class CategoriesViewHolder(private val binding: ItemCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(model: CategoryModel) {
-            binding.name.text = model.name
+        fun bind(model: CategoryExpensesModel) {
+            binding.apply {
+                name.text = model.categoryModel?.name ?: "Другое"
+                value.text = model.value.toString()
+            }
         }
-
     }
 }
